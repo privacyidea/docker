@@ -1,7 +1,7 @@
 FROM alpine:3.7
 
 ARG PRIVACYIDEA_GIT_VERSION=v2.22
-ARG PRIVACYIDEA_GIT_URL=git+https://github.com/p53/privacyidea.git
+ARG PRIVACYIDEA_GIT_URL=git+https://github.com/privacyidea/privacyidea.git
 ARG SSL_CERT_NAME=''
 ARG PRIVACYIDEA_HOME=/PRIVACYIDEA
 ARG UWSGI_VERSION=2.0.17.1
