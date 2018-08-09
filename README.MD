@@ -30,6 +30,8 @@ PI_LOGLEVEL - log level of app
 PI_SSL_CERT_NAME - name of certificate in /usr/local/share/ca-certificates/ used for encrypted connection to DB
 SUPERUSER_REALM - realm, where users are allowed to login as administrators
 PI_AUDIT_MODULE - lets you specify an alternative auditing module
+PI_AUDIT_KEY_PRIVATE_SECRET - secret for encrypting audit logs, when used must be base64 encoded
+PI_ENCFILE_SECRET - secret for encrypting passwords, when used must be base64 encoded
 
 ```
 * Run `docker-compose up`
