@@ -17,6 +17,8 @@ RUN apk add --no-cache \
   pcre-dev \
 	libxml2-dev \
 	libxslt-dev
+  libffi-dev \
+  openssl
 
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps \
@@ -67,12 +69,19 @@ RUN set -ex \
     && apk add --no-cache --virtual .python-rundeps $runDeps \
     && apk del .build-deps
 
-RUN if [ $PI_SSL_CERT_NAME ]; \
+RUN if [ "$PI_SSL_CERT_NAME" != "" ]; \
     then \
-	curl $PI_SSL_CRT_URL/${PI_SSL_CERT_NAME}.crt -o /usr/local/share/ca-certificates/${PI_SSL_CERT_NAME}.crt \
-        && update-ca-certificates \
-        && apk del curl; \
+      for CERT in $PI_SSL_CERT_NAME; \
+      do \
+	       curl --silent --show-error --fail \
+            $PI_SSL_CRT_URL/$CERT.crt \
+            -o /usr/local/share/ca-certificates/$CERT.crt; \
+      done; \
     fi;
+
+RUN apk del curl \
+    && mkdir -p /etc/ssl/certs \
+    && cat /usr/local/share/ca-certificates/* > /etc/ssl/certs/ca-certificates.crt
 
 # Copy your application code to the container (make sure you create a .dockerignore file if any large files or directories should be excluded)
 
