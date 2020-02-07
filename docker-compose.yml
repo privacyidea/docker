@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+
+  privacyidea:
+    image: privacyidea:dev
+    build:
+      context: .
+    depends_on:
+      - mssql
+    ports:
+      - 5000:5000
+    volumes:
+      - pidata:/home/pi/etc/privacyidea
+    environment: 
+      ADMIN_ACCOUNT: admin@admin.com
+      ADMIN_PASSWORD: admin
+      DB_HOSTNAME: mssql:1433
+      DB_USER: sa
+      DB_PASSWORD: Password!23
+      DB_DATABASE: pi
+      # This is used to encrypt the auth_token
+      SECRET_KEY: 'T0p S3Cret!'
+      # This is used to encrypt the admin passwords
+      PI_PEPPER: 'S3Cret'
+      PI_UI_DEACTIVATED: 'False'
+
+  # https://hub.docker.com/_/microsoft-mssql-server
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-CU14
+    volumes:
+      - mssqldata:/var/opt/mssql
+    environment: 
+      ACCEPT_EULA: 'Y'
+      SA_USER: sa
+      SA_PASSWORD: Password!23
+      MSSQL_PID: Developer # Could be also "Express", "Standard", "Enterprise" and "EnterpriseCore"
+
+volumes:
+  mssqldata:
+  pidata:
