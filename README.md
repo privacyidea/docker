@@ -1,28 +1,29 @@
 This is a small draft build environment to build a docker image for privacyIDEA.
 
-The image
-=========
+## Getting running example
 
-The docker image is a self contained Ubuntu 14.04 with privacyIDEA installed, which will
-run on every distribution.
+ * Start services
 
-Run it with 
+```bash
+docker-compose up
+```
 
-  docker run -d -p 5001:5001 privacyidea/otpserver
+ * Minimal setup steps
 
-This will download the existing privacyIDEA container from the docker hub
-https://registry.hub.docker.com/u/privacyidea/otpserver/
-and run it.
+```bash
+docker exec -it privacyidea bash               # connect to privacyIDEA docker container
+pi-manage createdb                             # create db
+pi-manage create_enckey                        # create encryption keys
+pi-manage create_audit_keys                    # create signing keys
+pi-manage admin add admin -e admin@localhost   # add admin user
+```
 
-Login to http://localhost:5001 with "admin@admin"/"test".
+Check more from [offical docs](https://privacyidea.readthedocs.io/en/latest/) about setup/config.
 
-You must not use this in productive environment, since it contains fixed encryption keys
-and SSL certificate!
+ * Access privacyIDEA -> [http://localhost:80/](http://localhost:80/)
 
-Building
-========
+## Build docker image
 
-To build the docker image, you must be root, since the result is written to
-/var/lib/docker...
-
-
+```bash
+docker build -t $NAME .
+```
